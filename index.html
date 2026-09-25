@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>جنگ جهانی شایسته ها</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background: #07080c;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           BACKGROUND
+        ========================= */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -5;
+
+            background:
+                radial-gradient(
+                    circle at 20% 15%,
+                    rgba(255, 60, 0, 0.20),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 80% 25%,
+                    rgba(255, 170, 0, 0.15),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 50% 90%,
+                    rgba(255, 40, 0, 0.16),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #050609,
+                    #190b06,
+                    #08090d
+                );
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: -100%;
+            z-index: -4;
+            pointer-events: none;
+
+            background:
+                repeating-linear-gradient(
+                    115deg,
+                    transparent 0px,
+                    transparent 30px,
+                    rgba(255, 120, 30, 0.055) 32px,
+                    transparent 35px,
+                    transparent 70px
+                );
+
+            animation: backgroundMove 18s linear infinite;
+        }
+
+        @keyframes backgroundMove {
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(150px, 100px);
+            }
+        }
+
+        /* =========================
+           INTRO
+        ========================= */
+
+        #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: #020305;
+
+            overflow: hidden;
+
+            animation: introDisappear 0.8s ease forwards;
+            animation-delay: 2s;
+        }
+
+        .intro-bg {
+            position: absolute;
+            inset: -20%;
+
+            background:
+                radial-gradient(
+                    circle at 15% 50%,
+                    rgba(255, 50, 0, 0.85),
+                    transparent 22%
+                ),
+                radial-gradient(
+                    circle at 85% 40%,
+                    rgba(255, 170, 0, 0.65),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    120deg,
+                    #050609,
+                    #351006,
+                    #08090d
+                );
+
+            animation: battleBackground 1s infinite alternate;
+        }
+
+        @keyframes battleBackground {
+            from {
+                transform: scale(1) rotate(-1deg);
+                filter: brightness(0.7) contrast(1.3);
+            }
+
+            to {
+                transform: scale(1.08) rotate(1deg);
+                filter: brightness(1.3) contrast(1.5);
+            }
+        }
+
+        .battle-lines {
+            position: absolute;
+            inset: 0;
+
+            background:
+                repeating-linear-gradient(
+                    100deg,
+                    transparent 0px,
+                    transparent 40px,
+                    rgba(255, 140, 40, 0.15) 42px,
+                    transparent 45px,
+                    transparent 90px
+                );
+
+            animation: battleLines 0.45s linear infinite;
+        }
+
+        @keyframes battleLines {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(100px);
+            }
+        }
+
+        .intro-title {
+            position: relative;
+            z-index: 2;
+
+            text-align: center;
+
+            font-size: clamp(28px, 9vw, 65px);
+            font-weight: 900;
+
+            line-height: 1.15;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff2100,
+                    #ffb000,
+                    #fff078,
+                    #ff4800,
+                    #ff1d00
+                );
+
+            background-size: 300%;
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+
+            animation: fireText 1.2s linear infinite;
+        }
+
+        @keyframes fireText {
+            from {
+                background-position: 0%;
+            }
+
+            to {
+                background-position: 300%;
+            }
+        }
+
+        @keyframes introDisappear {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* =========================
+           APP
+        ========================= */
+
+        .app {
+            width: 100%;
+            max-width: 650px;
+
+            margin: auto;
+
+            padding:
+                20px
+                15px
+                50px;
+        }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* =========================
+           REVEAL ANIMATION
+        ========================= */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(-35px);
+
+            animation:
+                revealElement
+                0.75s
+                cubic-bezier(.2,.8,.2,1)
+                forwards;
+        }
+
+        @keyframes revealElement {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            text-align: center;
+
+            padding:
+                50px
+                5px
+                30px;
+        }
+
+        .logo {
+            font-size: clamp(35px, 11vw, 70px);
+
+            line-height: 1.03;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff1900,
+                    #ffae00,
+                    #fff06a,
+                    #ff4a00,
+                    #ff1700
+                );
+
+            background-size: 400%;
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+
+            animation:
+                fireText 4s linear infinite,
+                logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from {
+                filter:
+                    drop-shadow(
+                        0 0 0
+                        rgba(255, 70, 0, 0)
+                    );
+            }
+
+            to {
+                filter:
+                    drop-shadow(
+                        0 0 18px
+                        rgba(255, 90, 0, 0.75)
+                    );
+            }
+        }
+
+        .subtitle {
+            margin-top: 15px;
+
+            color: #ff8b29;
+
+            font-size: clamp(16px, 4.5vw, 23px);
+
+            font-weight: 700;
+        }
+
+        .eyebrow {
+            margin-top: 10px;
+
+            color: #ffd19b;
+
+            font-size: 12px;
+
+            opacity: 0.65;
+        }
+
+        /* =========================
+           PANELS
+        ========================= */
+
+        .panel {
+            margin: 18px 0;
+
+            padding: 22px;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(35, 18, 10, 0.80),
+                    rgba(12, 14, 19, 0.90)
+                );
+
+            border:
+                1px solid
+                rgba(255, 120, 35, 0.30);
+
+            box-shadow:
+                0 18px 50px
+                rgba(0, 0, 0, 0.40),
+
+                inset 0 1px
+                rgba(255, 180, 90, 0.08);
+
+            backdrop-filter: blur(12px);
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .main-btn,
+        .back-btn {
+            width: 100%;
+
+            border: none;
+
+            border-radius: 18px;
+
+            padding: 17px 18px;
+
+            cursor: pointer;
+
+            color: #160b03;
+
+            font-size: 18px;
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #ff7300,
+                    #ffc15a,
+                    #ff5100
+                );
+
+            background-size: 220%;
+
+            animation: buttonMove 3s linear infinite;
+
+            box-shadow:
+                0 9px 30px
+                rgba(255, 91, 0, 0.22);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .main-btn:active,
+        .back-btn:active {
+            transform: scale(0.97);
+        }
+
+        @keyframes buttonMove {
+            from {
+                background-position: 0%;
+            }
+
+            to {
+                background-position: 220%;
+            }
+        }
+
+        .actions {
+            display: grid;
+            gap: 12px;
+        }
+
+        .support {
+            background:
+                linear-gradient(
+                    120deg,
+                    #e99a42,
+                    #ffe0ad,
+                    #e47f20
+                );
+        }
+
+        /* =========================
+           TEXT
+        ========================= */
+
+        .section-title {
+            margin:
+                6px
+                0
+                20px;
+
+            color: #ffad56;
+
+            font-size: 25px;
+
+            font-weight: 900;
+        }
+
+        .text {
+            color: #f1ddd0;
+
+            font-size: 14px;
+
+            line-height: 2.15;
+        }
+
+        .highlight {
+            color: #ff9b45;
+
+            font-weight: 800;
+        }
+
+        .secret {
+            color: #d4a3ff;
+
+            font-size: 14px;
+
+            font-weight: 500;
+        }
+
+        .tip {
+            margin-top: 15px;
+
+            padding:
+                10px
+                14px;
+
+            border-right:
+                3px solid
+                #ff781e;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 103, 24, 0.07);
+
+            color: #ffd7b5;
+
+            line-height: 1.9;
+
+            font-size: 13px;
+        }
+
+        /* =========================
+           TACTICS
+        ========================= */
+
+        .tactic-list {
+            list-style: none;
+        }
+
+        .tactic-list li {
+            margin: 10px 0;
+
+            padding: 14px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255, 104, 19, 0.07);
+
+            border:
+                1px solid
+                rgba(255, 130, 50, 0.13);
+
+            color: #ffe3d0;
+
+            font-size: 14px;
+
+            line-height: 1.9;
+        }
+
+        .number {
+            display: inline-flex;
+
+            width: 29px;
+            height: 29px;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #ff751c;
+
+            color: #1c0b02;
+
+            font-weight: 900;
+
+            margin-left: 7px;
+        }
+
+        .success {
+            text-align: center;
+
+            padding: 24px;
+
+            margin-top: 20px;
+
+            border-radius: 20px;
+
+            border:
+                1px solid
+                rgba(255, 190, 100, 0.55);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 164, 57, 0.30),
+                    rgba(255, 84, 0, 0.11)
+                );
+
+            color: #ffd49c;
+
+            font-size: 30px;
+
+            font-weight: 900;
+
+            box-shadow:
+                0 0 30px
+                rgba(255, 102, 0, 0.12);
+        }
+
+        .footer {
+            text-align: center;
+
+            margin-top: 18px;
+
+            color: #8f8078;
+
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     INTRO
+===================================================== -->
+
+<div id="intro">
+
+    <div class="intro-bg"></div>
+
+    <div class="battle-lines"></div>
+
+    <div class="intro-title">
+        WORLD WAR<br>
+        WORTHY
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<main class="app">
+
+
+    <!-- =================================================
+         HOME
+    ================================================== -->
+
+    <section
+        id="home"
+        class="screen active"
+    >
+
+        <!-- HERO -->
+
+        <div
+            class="hero reveal"
+            style="animation-delay: .15s"
+        >
+
+            <div class="logo">
+                WORLD WAR<br>
+                WORTHY
+            </div>
+
+            <div class="subtitle">
+                جنگ جهانی شایسته ها
+            </div>
+
+            <div class="eyebrow">
+                نبرد • قدرت • فتوحات • افتخار
+            </div>
+
+        </div>
+
+
+        <!-- TACTICS BUTTON -->
+
+        <div
+            class="panel reveal"
+            style="animation-delay: .30s"
+        >
+
+            <button
+                class="main-btn"
+                onclick="showScreen('tactics')"
+            >
+                ⚔️ تاکتیک‌های بازی
+            </button>
+
+        </div>
+
+
+        <!-- ABOUT -->
+
+        <div
+            class="panel reveal"
+            style="animation-delay: .45s"
+        >
+
+            <h2 class="section-title">
+                درباره‌ی بات
+            </h2>
+
+            <p class="text">
+
+                ربات جنگ جهانی شایسته ها تنها هدفی که دارد
+                <span class="highlight">
+                    لبخند شما عزیزان
+                </span>
+                است.
+
+            </p>
+
+
+            <h2 class="section-title">
+                روش استفاده از ربات
+            </h2>
+
+            <p class="text">
+
+                ابتدا ربات را در گروه خودتان عضو کنید.
+
+                <br>
+
+                <span class="highlight">
+                    نکته!
+                </span>
+
+                ربات فقط در گروه‌هایی فعالیت می‌کند که حداقل
+                <span class="highlight">
+                    ۵ عضو
+                </span>
+                داشته باشند.
+
+                <br><br>
+
+                سپس ربات را در گروه خود ادمین کنید و تمام
+                دسترسی‌های لازم را به ربات بدهید.
+
+            </p>
+
+        </div>
+
+
+        <!-- BOT GUIDE -->
+
+        <div
+            class="panel reveal"
+            style="animation-delay: .60s"
+        >
+
+            <h2 class="section-title">
+                راهنمای ربات
+            </h2>
+
+            <p class="text">
+
+                وقتی ربات را می‌آورید،
+                <span class="highlight">
+                    ۱ ساعت بعد
+                </span>
+                کشورگیری آغاز می‌شود.
+
+                <br><br>
+
+                ربات بعد از ۱ ساعت بلافاصله پیام کشورگیری
+                را برای شما می‌فرستد.
+
+                <br><br>
+
+                کشور گرفتن فقط به مدت
+                <span class="highlight">
+                    ۲۰ دقیقه
+                </span>
+                ممکن است و بعد از این زمان تا سیزن بعدی
+                امکان کشورگیری وجود ندارد.
+
+                <br><br>
+
+                بعد از کشورگیری، مرحله‌ی قدرت‌سازی شروع می‌شود.
+
+                <br><br>
+
+                مرحله‌ی قدرت‌سازی
+                <span class="highlight">
+                    ۲۴ ساعت
+                </span>
+                است و در این زمان حمله ممکن نیست تا
+                کشور‌داران قدرت خود را افزایش دهند و برای جنگ
+                آماده شوند.
+
+                <br><br>
+
+                بعد از ۲۴ ساعت، جنگ به مدت
+                <span class="highlight">
+                    ۲۵ دقیقه
+                </span>
+                فعال است و کشور‌داران در این زمان با امکانات
+                داخل بازی می‌توانند حمله انجام دهند.
+
+                <br><br>
+
+                بعد از ۲۵ دقیقه، سیزن اول به اتمام می‌رسد
+                و کشوری که بیشترین فتوحات را داشته باشد،
+                فاتح سیزن می‌شود!
+
+            </p>
+
+        </div>
+
+
+        <!-- FINAL ACTIONS -->
+
+        <div
+            class="panel reveal"
+            style="animation-delay: .75s"
+        >
+
+            <div class="actions">
+
+                <!-- BOT -->
+
+                <a
+                    class="main-btn"
+                    href="https://bale.ai/cccllbot"
+                >
+                    🚀 ورود به بات
+                </a>
+
+
+                <!-- SUPPORT -->
+
+                <a
+                    class="main-btn support"
+                    href="https://bale.ai/sadboytoxk"
+                >
+                    🛠️ پشتیبانی بات
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+            World War Worthy • Season System
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         TACTICS PAGE
+    ================================================== -->
+
+    <section
+        id="tactics"
+        class="screen"
+    >
+
+        <!-- TITLE -->
+
+        <div class="hero reveal">
+
+            <div
+                class="logo"
+                style="font-size: clamp(32px, 9vw, 55px)"
+            >
+                TACTICS
+            </div>
+
+            <div class="subtitle">
+                تاکتیک‌های بازی
+            </div>
+
+        </div>
+
+
+        <!-- INTRO TEXT -->
+
+        <div
+            class="panel reveal"
+            style="animation-delay: .12s"
+        >
+
+            <p class="text">
+
+                کاربر گرامی، اگر تو هم می‌خواهی قدرت زیادی
+                در بات داشته باشی و به تعداد زیادی قهرمان
+                فصل گروه خودت بشی، تاکتیک‌های زیادی وجود داره
+                که می‌تونی انجام بدی.
+
+                <br><br>
+
+                اگر اولین نفری باشی که اینجا رو نگاه کردی،
+                می‌تونی از همین حالا برای فصل گروهت
+                برنامه‌ریزی کنی.
+
+            </p>
+
+        </div>
+
+
+        <!-- WINNING TACTIC -->
+
+        <div
+            class="panel reveal"
+            style="animation-delay: .22s"
+        >
+
+            <h2 class="section-title">
+
+                تاکتیک برنده شدن
+
+                <span class="secret">
+                    [راهبرد مخفی]
+                </span>
+
+            </h2>
+
+
+            <p class="text">
+
+                برای پیشرفت در بازی، از موجودی اولیه‌ی خودتان
+                برای خرید
+                <span class="highlight">
+                    معدن الماس
+                </span>
+                استفاده کنید و چند ساعت منتظر بمانید تا
+                درآمد داخل بازی ایجاد شود.
+
+                <br><br>
+
+                هدف شما می‌تواند رساندن درآمد به حدود
+                <span class="highlight">
+                    ۵ میلیون دلار در ساعت
+                </span>
+                باشد.
+
+                <br><br>
+
+                اگر می‌خواهید احتمال موفقیتتان بیشتر شود،
+                تا زمانی که فرصت دارید می‌توانید منابع و درآمد
+                داخل بازی را افزایش دهید.
+
+                <br><br>
+
+                وقتی به یک درآمد مناسب رسیدید، نزدیک جنگ
+                تمرکزتان را روی آماده‌سازی نهایی و افزایش
+                توان بازی بگذارید.
+
+            </p>
+
+
+            <div class="tip">
+
+                این بخش صرفاً یک راهبرد اقتصادی داخل بازی است
+                و اعداد آن مربوط به سیستم بازی هستند.
+
+            </div>
+
+        </div>
+
+
+        <!-- TACTICS LIST -->
+
+        <div
+            class="panel reveal"
+            style="animation-delay: .32s"
+        >
+
+            <ul class="tactic-list">
+
+
+                <li>
+
+                    <span class="number">
+                        ۱
+                    </span>
+
+                    ابتدا
+                    <span class="highlight">
+                        سلامت داخل بازی
+                    </span>
+                    خود را به حداقل ۱۰۰ هزار برسانید.
+
+                </li>
+
+
+                <li>
+
+                    <span class="number">
+                        ۲
+                    </span>
+
+                    به اندازه‌ی حداقل ۱۵۰ عدد
+                    <span class="highlight">
+                        واحد دفاعی داخل بازی
+                    </span>
+                    خریداری کنید.
+
+                </li>
+
+
+                <li>
+
+                    <span class="number">
+                        ۳
+                    </span>
+
+                    حداقل ۲ هزار عدد
+                    <span class="highlight">
+                        موشک خیالی داخل بازی
+                    </span>
+                    خریداری کنید.
+
+                </li>
+
+
+                <li>
+
+                    <span class="number">
+                        ۴
+                    </span>
+
+                    حمله‌های سنگین
+                    <span class="highlight">
+                        داخل بازی
+                    </span>
+                    انجام دهید تا شانس فتوحات شما بالا برود!
+
+                </li>
+
+
+            </ul>
+
+        </div>
+
+
+        <!-- SUCCESS -->
+
+        <div
+            class="success reveal"
+            style="animation-delay: .42s"
+        >
+
+            موفق باشی! 🏆
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div
+            class="panel reveal"
+            style="animation-delay: .52s"
+        >
+
+            <button
+                class="back-btn"
+                onclick="showScreen('home')"
+            >
+
+                ↩️ بازگشت به صفحه اصلی
+
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    function showScreen(screenId) {
+
+        /*
+         * همه صفحات را مخفی می‌کنیم
+         */
+
+        const screens =
+            document.querySelectorAll(".screen");
+
+        screens.forEach(function(screen) {
+
+            screen.classList.remove("active");
+
+        });
+
+
+        /*
+         * صفحه مورد نظر را فعال می‌کنیم
+         */
+
+        const target =
+            document.getElementById(screenId);
+
+        target.classList.add("active");
+
+
+        /*
+         * رفتن به ابتدای صفحه
+         */
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+
+        /*
+         * اجرای دوباره انیمیشن عناصر
+         */
+
+        const elements =
+            target.querySelectorAll(".reveal");
+
+        elements.forEach(function(element, index) {
+
+            element.style.animation = "none";
+
+            /*
+             * مجبور کردن مرورگر به ثبت تغییر
+             */
+
+            void element.offsetWidth;
+
+            element.style.animation = "";
+
+            element.style.animationDelay =
+                (index * 0.08) + "s";
+
+        });
+
+    }
+
+
+    /*
+     * جلوگیری از انتخاب ناخواسته متن
+     * روی موبایل
+     */
+
+    document.addEventListener(
+        "contextmenu",
+        function(event) {
+
+            /*
+             * اگر خواستی این قسمت را حذف کن
+             * تا راست کلیک فعال باشد.
+             */
+
+            // event.preventDefault();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
